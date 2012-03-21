@@ -1,0 +1,10 @@
+.DS_Store
+tmp
+build/iphone/*
+build/android/*
+build/mobileweb/*
+Resources/config/environments.js
+build.log
+.project
+.settings/*
+.fastdev.lock
