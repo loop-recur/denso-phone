@@ -136,8 +136,8 @@ module.exports = (delegate) ->
 	
 	ac_button = Ti.UI.createButton({
 		backgroundImage:"/images/airdial/user_air_dial_ac_btn.png",
-		backgroundSelectedImage:"/airdial/air/user_air_dial_ac_btn_p.png",
-		backgroundActiveImage:"/airdial/air/user_air_dial_ac_btn_a.png",
+		backgroundSelectedImage:"/images/airdial/air/user_air_dial_ac_btn_p.png",
+		backgroundActiveImage:"/images/airdial/air/user_air_dial_ac_btn_a.png",
 		height:144,
 		width:144,
 		zIndex: 11
