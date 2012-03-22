@@ -1,5 +1,7 @@
 win = UI.createWindow({
-	backgroundColor: "red"
+	backgroundImage:"/images/denso_phone_bg.png",
+	height:800,
+	width:480
 })
 
 module.exports = win;

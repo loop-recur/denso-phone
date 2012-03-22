@@ -1,8 +1,8 @@
 module.exports = (delegate) ->
-	view = Ti.UI.createView({
-	})
+	view = Ti.UI.createView({})
 	
 	table = UI.createTableView({
+		top:0,
 		height: "100%",
 		delegate: delegate
 	})
@@ -13,7 +13,7 @@ module.exports = (delegate) ->
 
 	view.makeRow = (id, name, image) ->
 		img = Helpers.assetPath(image)
-		row = Ti.UI.createTableViewRow({id: id, title: name, leftImage: img})
+		row = Ti.UI.createTableViewRow({height: 112, id: id, title: name, leftImage: img})
 		return row
 
 	return view

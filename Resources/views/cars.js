@@ -1,8 +1,10 @@
 (function() {
+
   module.exports = function(delegate) {
     var table, view;
     view = Ti.UI.createView({});
     table = UI.createTableView({
+      top: 0,
       height: "100%",
       delegate: delegate
     });
@@ -12,6 +14,7 @@
       var img, row;
       img = Helpers.assetPath(image);
       row = Ti.UI.createTableViewRow({
+        height: 112,
         id: id,
         title: name,
         leftImage: img
@@ -20,4 +23,5 @@
     };
     return view;
   };
+
 }).call(this);

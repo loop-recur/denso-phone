@@ -3,6 +3,6 @@ Ti.UI.setBackgroundColor('#fff');
 
 require("initializers/init").init();
 
-App.setHost("http://localhost:3000", "admin@denso.com:Secret123");
+App.setHost("http://denso.herokuapp.com", "admin@denso.com:Secret123");
 
 Controllers.Users.open();
