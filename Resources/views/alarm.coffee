@@ -1,4 +1,6 @@
-Views.Alarm = (delegate) ->
+Views.Alarm = () ->
+	win = Ti.UI.createWindow({})
+	
 	view = Ti.UI.createView({
 		backgroundImage:"/images/alarm_overlay.png",
 		width: "100%",
@@ -7,4 +9,5 @@ Views.Alarm = (delegate) ->
 		zIndex: 20
 	})
 	
-	return view
+	win.add(view)
+	win.open()

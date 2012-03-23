@@ -7,7 +7,8 @@
       height: "100%",
       delegate: delegate
     });
-    view.init = function() {};
+    view.add(table);
+    view.init = table.loadData;
     view.makeRow = function(id, name, image) {
       var img, label, row;
       img = Helpers.assetPath(image);
@@ -39,16 +40,17 @@
       return row;
     };
     connect_btn = Ti.UI.createButton({
-      height: 100,
-      width: 100,
+      height: 50,
+      width: 150,
+      bottom: 30,
       title: "connect",
-      top: 20,
+      color: "white",
       zIndex: 999
     });
     view.add(connect_btn);
     connect_btn.addEventListener('click', function() {
       return ConnectSocket(function(ip) {
-        return Socketeer.connect("http://" + ip, 8888);
+        return Socketeer.connect(ip, 8888);
       });
     });
     return view;

@@ -7,7 +7,7 @@
         <target device="android">true</target>
         <target device="blackberry">false</target>
     </deployment-targets>
-    <sdk-version>1.8.0</sdk-version>
+    <sdk-version>1.8.2</sdk-version>
     <id>com.looprecur.denso_phone</id>
     <name>denso_phone</name>
     <version>0.5</version>

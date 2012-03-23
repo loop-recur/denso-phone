@@ -1,7 +1,7 @@
 (function() {
   Views.Preferences = function(delegate) {
     var ac_button, ac_gesture_view, ac_view, actual_temp, actual_temp_inside, airbag, desired_temp, desired_temp_inside, driver_button, outside_temp, outside_temp_number, passenger_button, rear_button, seat_selection_view, seatwarmer, start_engine_button, start_engine_view, temp_button, temp_circle1, temp_circle2, temp_gesture_view, temp_view, vehicle_settings, view, _toggleActive, _updateDesiredTemp, _updateDial, _updatePreferences;
-    _updateDial = function(prop, v) {
+    _updateDial = function(prefix, prop, v) {
       var current_level;
       current_level = 1;
       return function(e) {
@@ -22,7 +22,7 @@
           }
         }
         v.backgroundImage = Helpers.adjustDial(v.backgroundImage, current_level);
-        Socketeer.write(current_level);
+        Socketeer.write(prefix + "_" + current_level);
         return current_level;
       };
     };
@@ -39,8 +39,6 @@
       }
     };
     _updatePreferences = function(prefs) {
-      log("_updatePreferences");
-      log(prefs);
       airbag.backgroundImage = _toggleActive(prefs.airbags, airbag.backgroundImage);
       seatwarmer.backgroundImage = _toggleActive(prefs.seat_heater, seatwarmer.backgroundImage);
       ac_button.backgroundImage = _toggleActive(prefs.ac_on, ac_button.backgroundImage);
@@ -84,6 +82,9 @@
       width: 145,
       top: 40,
       left: 44
+    });
+    start_engine_button.addEventListener('click', function() {
+      return Socketeer.write("start_engine");
     });
     start_engine_view.add(start_engine_button);
     view.add(start_engine_view);
@@ -289,10 +290,10 @@
     view.add(seatwarmer);
     ac_gesture_view = Gestures.createView();
     ac_view.add(ac_gesture_view);
-    ac_gesture_view.addEventListener("onScroll", _updateDial('ac_level', ac_view));
+    ac_gesture_view.addEventListener("onScroll", _updateDial("ac", 'ac_level', ac_view));
     temp_gesture_view = Gestures.createView();
     temp_view.add(temp_gesture_view);
-    temp_gesture_view.addEventListener("onScroll", compose(_updateDesiredTemp, _updateDial('temp_level', temp_view)));
+    temp_gesture_view.addEventListener("onScroll", compose(_updateDesiredTemp, _updateDial("temp", 'temp_level', temp_view)));
     view.init = function(prefs) {
       return driver_button.fireEvent('click', {
         source: driver_button

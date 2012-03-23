@@ -1,4 +1,4 @@
-var ConnectSocket = function(cb) {
+var ConnectSocket = function(cb, options) {
 	options = (options || {});
 	
 	var init = function() {

@@ -7,9 +7,9 @@ Views.Users = (delegate) ->
 		delegate: delegate
 	})
 	
-	# view.add(table)
+	view.add(table)
 	
-	view.init = ()->
+	view.init = table.loadData
 	
 	view.makeRow = (id, name, image) ->
 		img = Helpers.assetPath(image)
@@ -42,20 +42,20 @@ Views.Users = (delegate) ->
 		return row
 		
 	connect_btn = Ti.UI.createButton({
-		height: 100,
-		width: 100,
-		title: "connect"
-		top: 20,
+		height: 50,
+		width: 150,
+		bottom: 30,
+		title: "connect",
+		color: "white",
 		zIndex: 999
 	})
-	
+
 	view.add(connect_btn)
-	
+
 	connect_btn.addEventListener('click', ()->
 		ConnectSocket((ip)->
-			Socketeer.connect("http://"+ip, 8888);
+			Socketeer.connect(ip, 8888);
 		)
 	)
-	
 	
 	return view

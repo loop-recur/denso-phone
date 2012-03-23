@@ -77,7 +77,7 @@ groups_of = defn(function(n, xs) {
 });
 
 strip = function(str) {
-	return str.replace(/\s+/, "");
+	return str.replace(/\s+/g, "");
 }
 
 split = defn(function(token, xs) {
