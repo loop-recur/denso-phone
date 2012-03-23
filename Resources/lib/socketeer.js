@@ -1,6 +1,10 @@
 Socketeer = (function() {
 	var SERVER = [];
 	
+	var closeAllSockets = function() {
+		map(function(s){ s.close(); }, SERVER);
+	}
+	
 	var _handleConnection = function(cb, e) {
 	 if(cb) cb(true);
 	 var socket = e.source ? e.source : e.socket;
@@ -28,6 +32,7 @@ Socketeer = (function() {
 			error: function(e) {
 				log("Error my homie");
 				log(e);
+				closeAllSockets();
 				if(cb) cb(false);
 	    }
 	  });
@@ -43,6 +48,7 @@ Socketeer = (function() {
 				if(tries > 0) {
 					_listen();
 				} else {
+					closeAllSockets();
 					cb(false);
 				}
 			}
@@ -58,7 +64,7 @@ Socketeer = (function() {
 	     host: ip,
 	     port: port,
 	     connected: _handleConnection.p(cb),
-	     error: function(e) {log(JSON.stringify(e)); cb(false); }
+	     error: function(e) {log(JSON.stringify(e)); closeAllSockets(); cb(false); }
 	 });
 		connectSocket.connect();
 		return connectSocket;
@@ -67,7 +73,7 @@ Socketeer = (function() {
 	var write = function(json) {
 		if(!SERVER[0]) return log("Could not write since there's no connected servers.");
 		var buffer = Ti.createBuffer({value: json});
-		try{SERVER[0].write(buffer);}catch(e){log("error writing buffer");}
+		try{SERVER[0].write(buffer);}catch(e){log("error writing buffer"); closeAllSockets();}
 		return json;
 	}
 
