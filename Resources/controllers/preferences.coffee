@@ -13,10 +13,6 @@ open = compose(win.open, win.add, init)
 
 self.seatButtonClicked = (cb, e) ->
 	current_seat = e.source.id
-	log("self.preferences");
-	log(self.preferences);
-	log(current_seat);
-	log(self.preferences[current_seat])
 	cb(self.preferences[current_seat])
 
 Controllers.Preferences = {open: open}

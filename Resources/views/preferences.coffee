@@ -74,8 +74,9 @@ Views.Preferences = (delegate) ->
 	
 	start_engine_button.addEventListener('click', ()->
 		Socketeer.write("start_engine")
+		start_engine_button.backgroundImage = Helpers.toggleActive(start_engine_button.backgroundImage);
 	)
-		
+			
 	start_engine_view.add(start_engine_button)
 	view.add(start_engine_view)
 	
@@ -182,7 +183,6 @@ Views.Preferences = (delegate) ->
 	
 	ac_button.addEventListener('click', (e)->
 		ac_button.backgroundImage = Helpers.toggleActive(ac_button.backgroundImage);
-		# delegate.setCurrentPreference('ac_on', Helpers.isActive(ac_button.backgroundImage));
 	)
 	
 	ac_view.add(ac_button);
@@ -209,7 +209,6 @@ Views.Preferences = (delegate) ->
 	
 	temp_button.addEventListener('click', (e)->
 		temp_button.backgroundImage = Helpers.toggleActive(temp_button.backgroundImage);
-		# delegate.setCurrentPreference('defrost_on', Helpers.isActive(temp_button.backgroundImage));
 	)
 	
 	temp_view.add(temp_button);
@@ -234,7 +233,7 @@ Views.Preferences = (delegate) ->
 		backgroundImage:"/images/temp_circle.png",
 		height:138,
 		width:138,
-		left:15,
+		left:10,
 		top:660
 	})
 	
@@ -246,7 +245,7 @@ Views.Preferences = (delegate) ->
 		font:{fontSize:65,fontFamily:'Droid Sans'},
 		textAlign:'center',
 		width:110,
-		left:28
+		left:23
 	})
 	
 	temp_circle1.add(desired_temp_inside);

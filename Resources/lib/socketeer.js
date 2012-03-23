@@ -2,7 +2,8 @@ Socketeer = (function() {
 	var SERVER = [];
 	
 	var closeAllSockets = function() {
-		map(function(s){ s.close(); }, SERVER);
+		map(function(s){ try{s.close();}catch(e){} }, SERVER);
+		SERVER = [];
 	}
 	
 	var _handleConnection = function(cb, e) {

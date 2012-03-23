@@ -84,7 +84,8 @@
       left: 44
     });
     start_engine_button.addEventListener('click', function() {
-      return Socketeer.write("start_engine");
+      Socketeer.write("start_engine");
+      return start_engine_button.backgroundImage = Helpers.toggleActive(start_engine_button.backgroundImage);
     });
     start_engine_view.add(start_engine_button);
     view.add(start_engine_view);
@@ -212,7 +213,7 @@
       backgroundImage: "/images/temp_circle.png",
       height: 138,
       width: 138,
-      left: 15,
+      left: 10,
       top: 660
     });
     view.add(temp_circle1);
@@ -225,7 +226,7 @@
       },
       textAlign: 'center',
       width: 110,
-      left: 28
+      left: 23
     });
     temp_circle1.add(desired_temp_inside);
     actual_temp = Ti.UI.createLabel({

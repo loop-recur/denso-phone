@@ -1,7 +1,7 @@
 Views.Connection = (cb) ->
 	win = Ti.UI.createWindow({
 	})
-	
+
 	view = Ti.UI.createView({
 		backgroundImage: "/images/connection/denso_connect_screen_bg.png",
 	})
@@ -25,16 +25,16 @@ Views.Connection = (cb) ->
 	})
 	
 	connect_button.addEventListener('click', ()->
-		connect_button.backgroundImage = connect_button.backgroundActiveImage;
+		connect_button.backgroundImage = connect_button.backgroundActiveImage
 		
 		ConnectSocket((ip)->
 			Socketeer.connect(ip, 8888, (connected)->
 				if connected
-					cb();
+					cb()
 				else
-					connect_button.backgroundImage = "/images/connection/connect_btn.png";
-					alert("Couldn't connect to denso app.");
-			);
+					connect_button.backgroundImage = "/images/connection/connect_btn.png"
+					alert("Couldn't connect to denso app.")
+			)
 		)
 	)
 
