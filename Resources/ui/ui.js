@@ -1,7 +1,6 @@
 UI = {};
 
-module.exports = function(from) {
-	require(from+'ui/table_view');
-	require(from+'ui/button_group');
-	require(from+'ui/window');
-}
+Ti.include('/ui/table_view.js');
+Ti.include('/ui/button_group.js');
+Ti.include('/ui/window.js');
+Ti.include('/ui/ip_wizard.js');

@@ -1,4 +1,4 @@
-var App = {};
+App = {};
 App.http_client = LoopRecur.HttpClient();
 
 App.setHost = function(url, credentials) {
@@ -7,4 +7,3 @@ App.setHost = function(url, credentials) {
 	if(credentials) App.http_client.credentials = ('Basic ' + Titanium.Utils.base64encode(credentials));
 }
 
-module.exports = App;

@@ -1,7 +1,5 @@
 Windows = {};
 
-module.exports = function(from) {
-	Windows.Users = require(from+'windows/users');
-	Windows.Cars = require(from+'windows/cars');
-	Windows.Preferences = require(from+'windows/preferences');
-}
+Ti.include('/windows/users.js');
+Ti.include('/windows/cars.js');
+Ti.include('/windows/preferences.js');

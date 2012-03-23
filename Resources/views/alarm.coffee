@@ -1,4 +1,4 @@
-module.exports = (delegate) ->
+Views.Alarm = (delegate) ->
 	view = Ti.UI.createView({
 		backgroundImage:"/images/alarm_overlay.png",
 		width: "100%",

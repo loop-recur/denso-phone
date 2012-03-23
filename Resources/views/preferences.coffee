@@ -1,4 +1,39 @@
-module.exports = (delegate) ->
+Views.Preferences = (delegate) ->
+
+	_updateDial = (prop, v) ->
+		current_level = 1;
+		return (e) ->
+			directions = Gestures.detect(e)
+			return if(!directions)
+		
+			if(directions.right || directions.up)
+				current_level += 2
+				current_level = 26 if(current_level >= 26)
+			else
+				current_level -= 2
+				current_level = 1 if(current_level <= 1)
+		
+			v.backgroundImage = Helpers.adjustDial(v.backgroundImage, current_level)
+			Socketeer.write(current_level);
+			return current_level
+
+	_updateDesiredTemp = (temp) ->
+		desired_temp_inside.text = (temp + 60).toString() if(temp)
+
+	_toggleActive = (bool, image)->
+		if bool then Helpers.active(image) else Helpers.inactive(image)
+
+	_updatePreferences = (prefs) ->
+		log("_updatePreferences")
+		log(prefs)
+		airbag.backgroundImage = _toggleActive(prefs.airbags, airbag.backgroundImage)
+		seatwarmer.backgroundImage = _toggleActive(prefs.seat_heater, seatwarmer.backgroundImage)
+		ac_button.backgroundImage = _toggleActive(prefs.ac_on, ac_button.backgroundImage)
+		temp_button.backgroundImage = _toggleActive(prefs.defrost_on, temp_button.backgroundImage)
+		temp_view.backgroundImage = Helpers.adjustDial(temp_view.backgroundImage, (prefs.temp_level || 1))
+		ac_view.backgroundImage = Helpers.adjustDial(ac_view.backgroundImage, (prefs.ac_level || 1))
+		_updateDesiredTemp(prefs.temp_level)
+
 	view = Ti.UI.createScrollView({
 		height:800,
 		width:480,
@@ -86,7 +121,7 @@ module.exports = (delegate) ->
 		id: 'driver'
 	})
 	
-	# driver_button.addEventListener('click', delegate.seatButtonClicked(_updatePreferences))
+	driver_button.addEventListener('click', delegate.seatButtonClicked.p(_updatePreferences))
 	
 	seat_selection_view.add(driver_button);
 	
@@ -101,7 +136,7 @@ module.exports = (delegate) ->
 		id: 'passenger'
 	})
 	
-	# passenger_button.addEventListener('click', delegate.seatButtonClicked(_updatePreferences))
+	passenger_button.addEventListener('click', delegate.seatButtonClicked.p(_updatePreferences))
 	
 	seat_selection_view.add(passenger_button);
 	
@@ -116,11 +151,11 @@ module.exports = (delegate) ->
 		id: 'rear'
 	})
 
-	# rear_button.addEventListener('click', delegate.seatButtonClicked(_updatePreferences))
+	rear_button.addEventListener('click', delegate.seatButtonClicked.p(_updatePreferences))
 	
 	seat_selection_view.add(rear_button)
 	
-	# UI.ButtonGroup([driver_button, passenger_button, rear_button]);
+	UI.ButtonGroup([driver_button, passenger_button, rear_button]);
 	
 	view.add(seat_selection_view)
 	
@@ -136,17 +171,17 @@ module.exports = (delegate) ->
 	
 	ac_button = Ti.UI.createButton({
 		backgroundImage:"/images/airdial/user_air_dial_ac_btn.png",
-		backgroundSelectedImage:"/images/airdial/air/user_air_dial_ac_btn_p.png",
-		backgroundActiveImage:"/images/airdial/air/user_air_dial_ac_btn_a.png",
+		backgroundSelectedImage:"/images/airdial/user_air_dial_ac_btn_p.png",
+		backgroundActiveImage:"/images/airdial/user_air_dial_ac_btn_a.png",
 		height:144,
 		width:144,
 		zIndex: 11
 	});
 	
-	# ac_button.addEventListener('click', function(e) {
-	# 	ac_button.backgroundImage = Helpers.images.toggleActive(ac_button.backgroundImage);
-	# 	delegate.setCurrentPreference('ac_on', Helpers.images.isActive(ac_button.backgroundImage));
-	# });
+	ac_button.addEventListener('click', (e)->
+		ac_button.backgroundImage = Helpers.toggleActive(ac_button.backgroundImage);
+		# delegate.setCurrentPreference('ac_on', Helpers.isActive(ac_button.backgroundImage));
+	)
 	
 	ac_view.add(ac_button);
 	view.add(ac_view)
@@ -168,12 +203,12 @@ module.exports = (delegate) ->
 		height:144,
 		width:144,
 		zIndex: 11
-	});
+	})
 	
-	# temp_button.addEventListener('click', function(e) {
-	# 	temp_button.backgroundImage = Helpers.images.toggleActive(temp_button.backgroundImage);
-	# 	delegate.setCurrentPreference('defrost_on', Helpers.images.isActive(temp_button.backgroundImage));
-	# });
+	temp_button.addEventListener('click', (e)->
+		temp_button.backgroundImage = Helpers.toggleActive(temp_button.backgroundImage);
+		# delegate.setCurrentPreference('defrost_on', Helpers.isActive(temp_button.backgroundImage));
+	)
 	
 	temp_view.add(temp_button);
 	view.add(temp_view)
@@ -258,6 +293,10 @@ module.exports = (delegate) ->
 		left: 30,
 		top: 950
 	})
+	
+	airbag.addEventListener('click', (e) ->
+		airbag.backgroundImage = Helpers.toggleActive(airbag.backgroundImage);
+	)
 		
 	view.add(airbag)
 	
@@ -270,7 +309,23 @@ module.exports = (delegate) ->
 		right: 30,
 		top: 950
 	})
+	
+	seatwarmer.addEventListener('click', (e) ->
+		seatwarmer.backgroundImage = Helpers.toggleActive(seatwarmer.backgroundImage);
+	)
 		
 	view.add(seatwarmer)
+	
+	ac_gesture_view = Gestures.createView()
+	ac_view.add(ac_gesture_view)
+	ac_gesture_view.addEventListener("onScroll", _updateDial('ac_level', ac_view))
+	
+	temp_gesture_view = Gestures.createView()
+	temp_view.add(temp_gesture_view)
+	temp_gesture_view.addEventListener("onScroll", compose(_updateDesiredTemp, _updateDial('temp_level', temp_view)))
+	
+	
+	view.init = (prefs) ->
+		driver_button.fireEvent('click', {source: driver_button})
 	
 	return view

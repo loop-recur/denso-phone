@@ -1,4 +1,4 @@
-module.exports = (delegate) ->
+Views.Cars = (delegate) ->
 	view = Ti.UI.createView({})
 	
 	table = UI.createTableView({

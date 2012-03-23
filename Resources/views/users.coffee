@@ -1,4 +1,4 @@
-module.exports = (delegate) ->
+Views.Users = (delegate) ->
 	view = Ti.UI.createView({})
 	
 	table = UI.createTableView({
@@ -40,5 +40,23 @@ module.exports = (delegate) ->
 		row.add(img)
 		
 		return row
+		
+	connect_btn = Ti.UI.createButton({
+		height: 100,
+		width: 100,
+		title: "connect"
+		bottom: 20,
+		zIndex: 999
+	})
+	
+	view.add(connect_btn)
+	
+	connect_btn.addEventListener('click', ()->
+		ConnectSocket((ip)->
+			addresses = ip.split(":")
+			Socketeer.connect("http://"+first(addresses), last(addresses))
+		)
+	)
+	
 	
 	return view

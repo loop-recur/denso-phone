@@ -1,6 +1,5 @@
 (function() {
-
-  module.exports = function(delegate) {
+  Views.Cars = function(delegate) {
     var table, view;
     view = Ti.UI.createView({});
     table = UI.createTableView({
@@ -42,5 +41,4 @@
     };
     return view;
   };
-
 }).call(this);

@@ -25,7 +25,7 @@ init = ()->
 open = compose(win.open, win.add, init)
 
 # delegates
-self.getTableData = (cb)->
+self.getTableData = (cb) ->
 	cb(pluck('rows')(self))
 
-module.exports = {open: open}
+Controllers.Users = {open: open}

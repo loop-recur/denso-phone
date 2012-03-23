@@ -71,6 +71,7 @@ RestApi = function(name) {
 	
 	function destroy(callbacks, obj, options) {
 		var id = obj.id;
+		if(typeof obj.id == "function") return;
 		var oldSuccess = callbacks.success || callbacks;
 		var oldError = callbacks.error || function(){};
 				

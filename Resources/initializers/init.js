@@ -1,19 +1,25 @@
-var requireFrom = function(from, xs) {
-	var from = from || "";
-	xs.map(function(m){ require(from+m+"/"+m)(from); });
-}
-domain = function(from) {
-	requireFrom(from, ['config', 'support', 'lib', 'models']);
-}
+function init(from) {
+	var fancyRequire = function(path) {
+		return function(module_name) {
+			Ti.API.info("requiring "+module_name+" from "+path+"/"+module_name);
+			return require(path+"/"+module_name);
+		}
+	}
 
-application = function(from) {
-	requireFrom(from, ['helpers', 'ui', 'windows', 'views', 'controllers']);
-}
+	var requireFrom = function(from, xs) {
+		var from = from || "";
+		xs.map(function(m){ Ti.include(from+m+"/"+m+".js")});
+	}
 
-module.exports.init = function(from) {
+	var domain = function(from) {
+		requireFrom(from, ['config', 'support', 'lib', 'models']);
+	}
+
+	var application = function(from) {
+		requireFrom(from, ['helpers', 'ui', 'windows', 'views', 'controllers']);
+	}
+
 	domain(from);
 	application(from);
+	
 }
-
-module.exports.domain = domain;
-module.exports.application = application;

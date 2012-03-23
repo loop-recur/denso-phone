@@ -1,7 +1,54 @@
 (function() {
-
-  module.exports = function(delegate) {
-    var ac_button, ac_view, actual_temp, actual_temp_inside, airbag, desired_temp, desired_temp_inside, driver_button, outside_temp, outside_temp_number, passenger_button, rear_button, seat_selection_view, seatwarmer, start_engine_button, start_engine_view, temp_button, temp_circle1, temp_circle2, temp_view, vehicle_settings, view;
+  Views.Preferences = function(delegate) {
+    var ac_button, ac_gesture_view, ac_view, actual_temp, actual_temp_inside, airbag, desired_temp, desired_temp_inside, driver_button, outside_temp, outside_temp_number, passenger_button, rear_button, seat_selection_view, seatwarmer, start_engine_button, start_engine_view, temp_button, temp_circle1, temp_circle2, temp_gesture_view, temp_view, vehicle_settings, view, _toggleActive, _updateDesiredTemp, _updateDial, _updatePreferences;
+    _updateDial = function(prop, v) {
+      var current_level;
+      current_level = 1;
+      return function(e) {
+        var directions;
+        directions = Gestures.detect(e);
+        if (!directions) {
+          return;
+        }
+        if (directions.right || directions.up) {
+          current_level += 2;
+          if (current_level >= 26) {
+            current_level = 26;
+          }
+        } else {
+          current_level -= 2;
+          if (current_level <= 1) {
+            current_level = 1;
+          }
+        }
+        v.backgroundImage = Helpers.adjustDial(v.backgroundImage, current_level);
+        Socketeer.write(current_level);
+        return current_level;
+      };
+    };
+    _updateDesiredTemp = function(temp) {
+      if (temp) {
+        return desired_temp_inside.text = (temp + 60).toString();
+      }
+    };
+    _toggleActive = function(bool, image) {
+      if (bool) {
+        return Helpers.active(image);
+      } else {
+        return Helpers.inactive(image);
+      }
+    };
+    _updatePreferences = function(prefs) {
+      log("_updatePreferences");
+      log(prefs);
+      airbag.backgroundImage = _toggleActive(prefs.airbags, airbag.backgroundImage);
+      seatwarmer.backgroundImage = _toggleActive(prefs.seat_heater, seatwarmer.backgroundImage);
+      ac_button.backgroundImage = _toggleActive(prefs.ac_on, ac_button.backgroundImage);
+      temp_button.backgroundImage = _toggleActive(prefs.defrost_on, temp_button.backgroundImage);
+      temp_view.backgroundImage = Helpers.adjustDial(temp_view.backgroundImage, prefs.temp_level || 1);
+      ac_view.backgroundImage = Helpers.adjustDial(ac_view.backgroundImage, prefs.ac_level || 1);
+      return _updateDesiredTemp(prefs.temp_level);
+    };
     view = Ti.UI.createScrollView({
       height: 800,
       width: 480,
@@ -81,6 +128,7 @@
       top: 5,
       id: 'driver'
     });
+    driver_button.addEventListener('click', delegate.seatButtonClicked.p(_updatePreferences));
     seat_selection_view.add(driver_button);
     passenger_button = Ti.UI.createButton({
       backgroundImage: "/images/userselect/user_toggle_passenger.png",
@@ -92,6 +140,7 @@
       top: 5,
       id: 'passenger'
     });
+    passenger_button.addEventListener('click', delegate.seatButtonClicked.p(_updatePreferences));
     seat_selection_view.add(passenger_button);
     rear_button = Ti.UI.createButton({
       backgroundImage: "/images/userselect/user_toggle_rear.png",
@@ -103,7 +152,9 @@
       top: 5,
       id: 'rear'
     });
+    rear_button.addEventListener('click', delegate.seatButtonClicked.p(_updatePreferences));
     seat_selection_view.add(rear_button);
+    UI.ButtonGroup([driver_button, passenger_button, rear_button]);
     view.add(seat_selection_view);
     ac_view = Ti.UI.createView({
       backgroundImage: "/images/airdial/user_air_dial_1.png",
@@ -113,11 +164,14 @@
     });
     ac_button = Ti.UI.createButton({
       backgroundImage: "/images/airdial/user_air_dial_ac_btn.png",
-      backgroundSelectedImage: "/airdial/air/user_air_dial_ac_btn_p.png",
-      backgroundActiveImage: "/airdial/air/user_air_dial_ac_btn_a.png",
+      backgroundSelectedImage: "/images/airdial/user_air_dial_ac_btn_p.png",
+      backgroundActiveImage: "/images/airdial/user_air_dial_ac_btn_a.png",
       height: 144,
       width: 144,
       zIndex: 11
+    });
+    ac_button.addEventListener('click', function(e) {
+      return ac_button.backgroundImage = Helpers.toggleActive(ac_button.backgroundImage);
     });
     ac_view.add(ac_button);
     view.add(ac_view);
@@ -134,6 +188,9 @@
       height: 144,
       width: 144,
       zIndex: 11
+    });
+    temp_button.addEventListener('click', function(e) {
+      return temp_button.backgroundImage = Helpers.toggleActive(temp_button.backgroundImage);
     });
     temp_view.add(temp_button);
     view.add(temp_view);
@@ -213,6 +270,9 @@
       left: 30,
       top: 950
     });
+    airbag.addEventListener('click', function(e) {
+      return airbag.backgroundImage = Helpers.toggleActive(airbag.backgroundImage);
+    });
     view.add(airbag);
     seatwarmer = Ti.UI.createButton({
       backgroundImage: "/images/otherbuttons/user_temp_heated_seat_btn.png",
@@ -223,8 +283,21 @@
       right: 30,
       top: 950
     });
+    seatwarmer.addEventListener('click', function(e) {
+      return seatwarmer.backgroundImage = Helpers.toggleActive(seatwarmer.backgroundImage);
+    });
     view.add(seatwarmer);
+    ac_gesture_view = Gestures.createView();
+    ac_view.add(ac_gesture_view);
+    ac_gesture_view.addEventListener("onScroll", _updateDial('ac_level', ac_view));
+    temp_gesture_view = Gestures.createView();
+    temp_view.add(temp_gesture_view);
+    temp_gesture_view.addEventListener("onScroll", compose(_updateDesiredTemp, _updateDial('temp_level', temp_view)));
+    view.init = function(prefs) {
+      return driver_button.fireEvent('click', {
+        source: driver_button
+      });
+    };
     return view;
   };
-
 }).call(this);

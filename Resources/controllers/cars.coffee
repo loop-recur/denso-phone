@@ -27,4 +27,4 @@ open = compose(win.open, win.add, init)
 self.getTableData = (cb)->
 	cb(pluck('rows')(self))
 
-module.exports = {open: open}
+Controllers.Cars = {open: open}

@@ -17,5 +17,16 @@ Helpers.downloadPath = function(path) {
 	return (path.indexOf('amazonaws') < 0) ? App.download_url+path : path;
 }
 
+Helpers.adjustDial = function(path, level) {
+	return replace(/_(\d+)\.png$/, "_"+level+".png", path);
+}
 
-module.exports = function(from) {}
+Helpers.isActive = compose(toBool, match(/_a\.png$/));
+
+Helpers.active = replace(/btn\.png$/, "btn_a.png");
+
+Helpers.inactive = replace(/_a\.png$/, ".png");
+
+Helpers.toggleActive = function(path) {
+	return Helpers.isActive(path) ? Helpers.inactive(path) : Helpers.active(path);
+}

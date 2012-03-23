@@ -4,4 +4,4 @@ win = UI.createWindow({
 	width:480
 })
 
-module.exports = win;
+Windows.Users = win;

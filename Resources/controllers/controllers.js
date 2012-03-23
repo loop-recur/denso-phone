@@ -1,7 +1,5 @@
 Controllers = {};
 
-module.exports = function(from) {
-  Controllers.Users = require(from + 'controllers/users');
-	Controllers.Cars = require(from + 'controllers/cars');
-	Controllers.Preferences = require(from + 'controllers/preferences');
-};
+Ti.include('/controllers/users.js');
+Ti.include('/controllers/cars.js');
+Ti.include('/controllers/preferences.js');

@@ -1,7 +1,6 @@
 (function() {
-
-  module.exports = function(delegate) {
-    var table, view;
+  Views.Users = function(delegate) {
+    var connect_btn, table, view;
     view = Ti.UI.createView({});
     table = UI.createTableView({
       top: 0,
@@ -40,7 +39,21 @@
       row.add(img);
       return row;
     };
+    connect_btn = Ti.UI.createButton({
+      height: 100,
+      width: 100,
+      title: "connect",
+      bottom: 20,
+      zIndex: 999
+    });
+    view.add(connect_btn);
+    connect_btn.addEventListener('click', function() {
+      return ConnectSocket(function(ip) {
+        var addresses;
+        addresses = ip.split(":");
+        return Socketeer.connect("http://" + first(addresses), last(addresses));
+      });
+    });
     return view;
   };
-
 }).call(this);

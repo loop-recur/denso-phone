@@ -1,6 +1,5 @@
 (function() {
-
-  module.exports = function(delegate) {
+  Views.Alarm = function(delegate) {
     var view;
     view = Ti.UI.createView({
       backgroundImage: "/images/alarm_overlay.png",
@@ -11,5 +10,4 @@
     });
     return view;
   };
-
 }).call(this);
