@@ -7,9 +7,9 @@ Views.Users = (delegate) ->
 		delegate: delegate
 	})
 	
-	view.add(table)
+	# view.add(table)
 	
-	view.init = table.loadData
+	view.init = ()->
 	
 	view.makeRow = (id, name, image) ->
 		img = Helpers.assetPath(image)
@@ -45,7 +45,7 @@ Views.Users = (delegate) ->
 		height: 100,
 		width: 100,
 		title: "connect"
-		bottom: 20,
+		top: 20,
 		zIndex: 999
 	})
 	
@@ -53,8 +53,7 @@ Views.Users = (delegate) ->
 	
 	connect_btn.addEventListener('click', ()->
 		ConnectSocket((ip)->
-			addresses = ip.split(":")
-			Socketeer.connect("http://"+first(addresses), last(addresses))
+			Socketeer.connect("http://"+ip, 8888);
 		)
 	)
 	

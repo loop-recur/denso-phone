@@ -1,5 +1,5 @@
 Gestures = (function() {
-	var lib = isAndroid ? require('com.looprecur.gestures') : HtmlGestures();
+	var lib = HtmlGestures();
 	
 	var createView = function() {		
 		return lib.createGesturesView();

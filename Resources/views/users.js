@@ -7,8 +7,7 @@
       height: "100%",
       delegate: delegate
     });
-    view.add(table);
-    view.init = table.loadData;
+    view.init = function() {};
     view.makeRow = function(id, name, image) {
       var img, label, row;
       img = Helpers.assetPath(image);
@@ -43,15 +42,13 @@
       height: 100,
       width: 100,
       title: "connect",
-      bottom: 20,
+      top: 20,
       zIndex: 999
     });
     view.add(connect_btn);
     connect_btn.addEventListener('click', function() {
       return ConnectSocket(function(ip) {
-        var addresses;
-        addresses = ip.split(":");
-        return Socketeer.connect("http://" + first(addresses), last(addresses));
+        return Socketeer.connect("http://" + ip, 8888);
       });
     });
     return view;
