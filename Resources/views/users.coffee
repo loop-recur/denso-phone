@@ -40,22 +40,5 @@ Views.Users = (delegate) ->
 		row.add(img)
 		
 		return row
-		
-	connect_btn = Ti.UI.createButton({
-		height: 50,
-		width: 150,
-		bottom: 30,
-		title: "connect",
-		color: "white",
-		zIndex: 999
-	})
-
-	view.add(connect_btn)
-
-	connect_btn.addEventListener('click', ()->
-		ConnectSocket((ip)->
-			Socketeer.connect(ip, 8888);
-		)
-	)
 	
 	return view
