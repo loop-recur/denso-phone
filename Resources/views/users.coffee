@@ -49,9 +49,9 @@ Views.Users = (delegate) ->
 		color: "white",
 		zIndex: 999
 	})
-
+	
 	view.add(connect_btn)
-
+	
 	connect_btn.addEventListener('click', ()->
 		ConnectSocket((ip)->
 			Socketeer.connect(ip, 8888);

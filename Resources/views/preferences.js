@@ -1,4 +1,5 @@
 (function() {
+
   Views.Preferences = function(delegate) {
     var ac_button, ac_gesture_view, ac_view, actual_temp, actual_temp_inside, airbag, desired_temp, desired_temp_inside, driver_button, outside_temp, outside_temp_number, passenger_button, rear_button, seat_selection_view, seatwarmer, start_engine_button, start_engine_view, temp_button, temp_circle1, temp_circle2, temp_gesture_view, temp_view, vehicle_settings, view, _toggleActive, _updateDesiredTemp, _updateDial, _updatePreferences;
     _updateDial = function(prefix, prop, v) {
@@ -7,19 +8,13 @@
       return function(e) {
         var directions;
         directions = Gestures.detect(e);
-        if (!directions) {
-          return;
-        }
+        if (!directions) return;
         if (directions.right || directions.up) {
           current_level += 2;
-          if (current_level >= 26) {
-            current_level = 26;
-          }
+          if (current_level >= 26) current_level = 26;
         } else {
           current_level -= 2;
-          if (current_level <= 1) {
-            current_level = 1;
-          }
+          if (current_level <= 1) current_level = 1;
         }
         v.backgroundImage = Helpers.adjustDial(v.backgroundImage, current_level);
         Socketeer.write(prefix + "_" + current_level);
@@ -27,9 +22,7 @@
       };
     };
     _updateDesiredTemp = function(temp) {
-      if (temp) {
-        return desired_temp_inside.text = (temp + 60).toString();
-      }
+      if (temp) return desired_temp_inside.text = (temp + 60).toString();
     };
     _toggleActive = function(bool, image) {
       if (bool) {
@@ -301,4 +294,5 @@
     };
     return view;
   };
+
 }).call(this);

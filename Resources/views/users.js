@@ -1,4 +1,5 @@
 (function() {
+
   Views.Users = function(delegate) {
     var connect_btn, table, view;
     view = Ti.UI.createView({});
@@ -55,4 +56,5 @@
     });
     return view;
   };
+
 }).call(this);
