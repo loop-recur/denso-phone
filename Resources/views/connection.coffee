@@ -12,7 +12,7 @@ Views.Connection = (cb) ->
 		backgroundImage:"/images/connect/connect_btn_base.png",
 		width:183,
 		height:183,
-		top:400
+		bottom:100
 	})
 
 	connect_button = Ti.UI.createButton({
