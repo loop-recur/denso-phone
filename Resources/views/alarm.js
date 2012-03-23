@@ -1,4 +1,5 @@
 (function() {
+
   Views.Alarm = function() {
     var view, win;
     win = Ti.UI.createWindow({});
@@ -11,4 +12,5 @@
     win.add(view);
     return win.open();
   };
+
 }).call(this);

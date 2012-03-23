@@ -3,25 +3,24 @@ Views.Connection = (cb) ->
 	})
 
 	view = Ti.UI.createView({
-		backgroundImage: "/images/connection/denso_connect_screen_bg.png",
+		backgroundImage: "/images/connect/denso_connect_screen_bg.png",
 	})
 	
 	win.add(view)
 	
 	connect_view = Ti.UI.createView({
-		backgroundImage:"/images/connection/connect_btn_base.png",
-		height:200,
-		width:200,
-		bottom:40
+		backgroundImage:"/images/connect/connect_btn_base.png",
+		width:183,
+		height:183,
+		bottom:100
 	})
-	
+
 	connect_button = Ti.UI.createButton({
-		backgroundImage:"/images/connection/connect_btn.png",
-		backgroundSelectedImage:"/images/connection/connect_btn_p.png",
-		backgroundActiveImage:"/images/connection/connect_btn_a.png",
-		height:126,
-		width:127,
-		zIndex: 11
+		backgroundImage:"/images/connect/connect_btn.png",
+		backgroundSelectedImage:"/images/connect/connect_btn_p.png",
+		backgroundActiveImage:"/images/connect/connect_btn_a.png",
+		height:127,
+		width:126
 	})
 	
 	connect_button.addEventListener('click', ()->

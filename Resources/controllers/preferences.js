@@ -1,10 +1,16 @@
 (function() {
   var PreferenceApi, current_seat, init, open, self, view, win;
+
   win = Windows.Preferences;
+
   PreferenceApi = RestApi("preferences");
+
   self = {};
+
   view = {};
+
   current_seat = "";
+
   init = function(profile, car) {
     view = Views.Preferences(self);
     PreferenceApi.all(compose(view.init, set(self, 'preferences')), {
@@ -13,12 +19,16 @@
     });
     return view;
   };
+
   open = compose(win.open, win.add, init);
+
   self.seatButtonClicked = function(cb, e) {
     current_seat = e.source.id;
     return cb(self.preferences[current_seat]);
   };
+
   Controllers.Preferences = {
     open: open
   };
+
 }).call(this);
