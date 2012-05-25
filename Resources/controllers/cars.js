@@ -1,46 +1,41 @@
 (function() {
-  var finishLoad, init, makeRows, open, self, view, win, _makeRow, _openPrefs;
+  var win = Windows.Cars,
 
-  win = Windows.Cars;
+      self = {},
 
-  self = {};
+      view = {},
 
-  view = {};
+      _openPrefs = function(e) {
+        var car = filterByProperty('id', e.source.id)(self.profile.cars);
+        return Controllers.Preferences.open(self.profile, car);
+      },
 
-  _openPrefs = function(e) {
-    var car;
-    car = filterByProperty('id', e.source.id)(self.profile.cars);
-    return Controllers.Preferences.open(self.profile, car);
-  };
+      _makeRow = function(car) {
+        var row = view.makeRow(car.id, car.name, car.image);
+        row.addEventListener('click', _openPrefs);
+        return row;
+      },
 
-  _makeRow = function(car) {
-    var row;
-    row = view.makeRow(car.id, car.name, car.image);
-    row.addEventListener('click', _openPrefs);
-    return row;
-  };
+      makeRows = compose(set(self, "rows"), map(_makeRow)),
 
-  makeRows = compose(set(self, "rows"), map(_makeRow));
+      finishLoad = function(cars) {
+        return compose(view.init, makeRows)(cars);
+      },
 
-  finishLoad = function(cars) {
-    return compose(view.init, makeRows)(cars);
-  };
+      init = function(profile) {
+        view = Views.Cars(self);
+        self.profile = profile;
+        finishLoad(profile.cars);
+        return view;
+      },
 
-  init = function(profile) {
-    view = Views.Cars(self);
-    self.profile = profile;
-    finishLoad(profile.cars);
-    return view;
-  };
-
-  open = compose(win.open, win.add, init);
+      open = compose(win.open, win.add, init);
 
   self.getTableData = function(cb) {
     return cb(pluck('rows')(self));
   };
 
-  Controllers.Cars = {
-    open: open
-  };
+  Controllers.Cars = { open: open };
 
 }).call(this);
+

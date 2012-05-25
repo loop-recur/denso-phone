@@ -1,34 +1,31 @@
 (function() {
-  var PreferenceApi, current_seat, init, open, self, view, win;
+  var win = Windows.Preferences,
 
-  win = Windows.Preferences;
+      PreferenceApi = RestApi("preferences"),
 
-  PreferenceApi = RestApi("preferences");
+      self = {},
 
-  self = {};
+      view = {},
 
-  view = {};
+      current_seat = "",
 
-  current_seat = "";
+      init = function(profile, car) {
+        view = Views.Preferences(self);
+        PreferenceApi.all(compose(view.init, set(self, 'preferences')), {
+          profile_id: profile.id,
+          car_id: car.id
+        });
+        return view;
+      },
 
-  init = function(profile, car) {
-    view = Views.Preferences(self);
-    PreferenceApi.all(compose(view.init, set(self, 'preferences')), {
-      profile_id: profile.id,
-      car_id: car.id
-    });
-    return view;
-  };
-
-  open = compose(win.open, win.add, init);
+      open = compose(win.open, win.add, init);
 
   self.seatButtonClicked = function(cb, e) {
     current_seat = e.source.id;
     return cb(self.preferences[current_seat]);
   };
 
-  Controllers.Preferences = {
-    open: open
-  };
+  Controllers.Preferences = { open: open };
 
 }).call(this);
+

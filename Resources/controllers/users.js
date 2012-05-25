@@ -1,47 +1,42 @@
 (function() {
-  var ProfileApi, finishLoad, init, makeRows, open, self, view, win, _makeRow, _openCars;
+  var win = Windows.Users,
 
-  win = Windows.Users;
+      ProfileApi = RestApi("profiles"),
 
-  ProfileApi = RestApi("profiles");
+      self = {},
 
-  self = {};
+      view = {},
 
-  view = {};
+      _openCars = function(e) {
+        var profile;
+        profile = filterByProperty('id', e.source.id)(self.profiles);
+        return Controllers.Cars.open(profile);
+      },
 
-  _openCars = function(e) {
-    var profile;
-    profile = filterByProperty('id', e.source.id)(self.profiles);
-    return Controllers.Cars.open(profile);
-  };
+      _makeRow = function(profile) {
+        var row;
+        row = view.makeRow(profile.id, profile.name, profile.avatar);
+        row.addEventListener('click', _openCars);
+        return row;
+      },
 
-  _makeRow = function(profile) {
-    var row;
-    row = view.makeRow(profile.id, profile.name, profile.avatar);
-    row.addEventListener('click', _openCars);
-    return row;
-  };
+      makeRows = compose(set(self, "rows"), map(_makeRow)),
 
-  makeRows = compose(set(self, "rows"), map(_makeRow));
+      finishLoad = function(ps) {
+        return compose(view.init, makeRows, set(self, "profiles"))(ps);
+      },
 
-  finishLoad = function(ps) {
-    return compose(view.init, makeRows, set(self, "profiles"))(ps);
-  };
+      init = function() {
+        view = Views.Users(self);
+        ProfileApi.all(finishLoad);
+        return view;
+      },
 
-  init = function() {
-    view = Views.Users(self);
-    ProfileApi.all(finishLoad);
-    return view;
-  };
+      open = compose(win.open, win.add, init);
 
-  open = compose(win.open, win.add, init);
+  self.getTableData = function(cb) { return cb(pluck('rows')(self)); };
 
-  self.getTableData = function(cb) {
-    return cb(pluck('rows')(self));
-  };
-
-  Controllers.Users = {
-    open: open
-  };
+  Controllers.Users = { open: open };
 
 }).call(this);
+

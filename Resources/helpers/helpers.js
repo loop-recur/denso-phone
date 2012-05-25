@@ -9,7 +9,7 @@ Helpers.toggle = function(toggleable) {
 }
 
 Helpers.assetPath = function(path) {
-	if(path[0] == "/") return App.download_url+path;
+	if(path[0] == "/"){ return App.download_url+path; }
 	return path;
 }
 
@@ -30,3 +30,4 @@ Helpers.inactive = replace(/_a\.png$/, ".png");
 Helpers.toggleActive = function(path) {
 	return Helpers.isActive(path) ? Helpers.inactive(path) : Helpers.active(path);
 }
+

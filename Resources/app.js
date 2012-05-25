@@ -1,4 +1,3 @@
-// this sets the background color of the master UIView (when there are no windows/tab groups on it)
 Ti.UI.setBackgroundColor('#fff');
 
 isAndroid = Ti.Platform.osname == 'android';
@@ -17,3 +16,4 @@ Socketeer.listen(8888, function(client_connected){
 });
 
 Views.Connection(Controllers.Users.open);
+
